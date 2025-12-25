@@ -111,7 +111,7 @@ The app will be available at `http://localhost:5173`
    - **Root Directory**: Leave empty
    - **Build Command**: 
      ```
-     cd client && NODE_ENV=development npm install && npm run build && mkdir -p ../server/dist && cp -r dist/* ../server/dist/ && cd ../server && npm install --omit=dev
+     cd client && npm install && npm run build && mkdir -p ../server/dist && cp -r dist/* ../server/dist/ && cd ../server && npm install --omit=dev
      ```
    - **Start Command**: `cd server && npm start`
 
