@@ -5,10 +5,10 @@ services:
     region: oregon
     plan: free
     buildCommand: |
-      cd client && npm install && npm run build && 
+      cd client && npm ci --include=dev && npm run build && 
       mkdir -p ../server/dist && 
       cp -r dist/* ../server/dist/ && 
-      cd ../server && npm install
+      cd ../server && npm ci --omit=dev
     startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
