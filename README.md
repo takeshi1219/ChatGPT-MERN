@@ -1,7 +1,7 @@
 # ChatGPT Clone
 
 A full-stack ChatGPT clone built with the MERN stack (MongoDB, Express.js, React, Node.js) using OpenAI's GPT-3.5 Turbo API.
-
+![App Screenshot](https://github.com/takeshi1219/ChatGPT-MERN/blob/main/ChatGPT.png)
 ## Features
 
 - 🔐 **Authentication**: Email/password login with email verification
