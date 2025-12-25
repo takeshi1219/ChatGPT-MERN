@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: chatgpt-mern
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: |
+      cd client && npm install && npm run build && 
+      mkdir -p ../server/dist && 
+      cp -r dist/* ../server/dist/ && 
+      cd ../server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGO_URL
+        sync: false
+      - key: SITE_URL
+        sync: false
+      - key: JWT_PRIVATE_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_ORGANIZATION
+        sync: false
+      - key: MAIL_EMAIL
+        sync: false
+      - key: MAIL_SECRET
+        sync: false
+      - key: VITE_CLIENT_ID
+        sync: false
+    healthCheckPath: /api/chat/
+

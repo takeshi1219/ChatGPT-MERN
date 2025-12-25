@@ -248,8 +248,16 @@ router.get('/login', CheckLogged, async (req, res) => {
                     expiresIn: '24h'
                 })
 
+                // Cookie options for production (HTTPS) and development
+                const cookieOptions = {
+                    httpOnly: true,
+                    expires: new Date(Date.now() + 86400000),
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+                }
+
                 res.status(200)
-                    .cookie("userToken", token, { httpOnly: true, expires: new Date(Date.now() + 86400000) })
+                    .cookie("userToken", token, cookieOptions)
                     .json({
                         status: 200,
                         message: 'Success',

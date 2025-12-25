@@ -1,6 +1,6 @@
 import { Router } from "express";
 import dotnet from 'dotenv'
-import { Configuration, OpenAIApi } from 'openai'
+import OpenAI from 'openai'
 import user from '../helpers/user.js'
 import jwt from 'jsonwebtoken'
 import chat from "../helpers/chat.js";
@@ -45,12 +45,11 @@ const CheckUser = async (req, res, next) => {
     })
 }
 
-const configuration = new Configuration({
-    organization: process.env.OPENAI_ORGANIZATION,
-    apiKey: process.env.OPENAI_API_KEY
+// Initialize OpenAI with the new v4 SDK
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+    organization: process.env.OPENAI_ORGANIZATION
 })
-
-const openai = new OpenAIApi(configuration)
 
 router.get('/', (req, res) => {
     res.send("Welcome to chatGPT api v1")
@@ -62,35 +61,35 @@ router.post('/', CheckUser, async (req, res) => {
     let response = {}
 
     try {
-        response.openai = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
-            temperature: 0,
-            max_tokens: 100,
+        // Using the new Chat Completions API with gpt-3.5-turbo
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 1000,
             top_p: 1,
             frequency_penalty: 0.2,
             presence_penalty: 0,
         });
 
-        if (response?.openai?.data?.choices?.[0]?.text) {
-            response.openai = response.openai.data.choices[0].text
-            let index = 0
-            for (let c of response['openai']) {
-                if (index <= 1) {
-                    if (c == '\n') {
-                        response.openai = response.openai.slice(1, response.openai.length)
-                    }
-                } else {
-                    break;
-                }
-                index++
-            }
+        if (completion?.choices?.[0]?.message?.content) {
+            response.openai = completion.choices[0].message.content.trim()
             response.db = await chat.newResponse(prompt, response, userId)
         }
     } catch (err) {
+        console.error('OpenAI API Error:', err)
         res.status(500).json({
             status: 500,
-            message: err
+            message: err?.message || 'OpenAI API Error'
         })
     } finally {
         if (response?.db && response?.openai) {
@@ -112,35 +111,35 @@ router.put('/', CheckUser, async (req, res) => {
     let response = {}
 
     try {
-        response.openai = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
+        // Using the new Chat Completions API with gpt-3.5-turbo
+        const completion = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                {
+                    role: "system",
+                    content: "You are a helpful assistant."
+                },
+                {
+                    role: "user",
+                    content: prompt
+                }
+            ],
             temperature: 0.7,
-            max_tokens: 100,
+            max_tokens: 1000,
             top_p: 1,
             frequency_penalty: 0.2,
             presence_penalty: 0,
         });
 
-        if (response?.openai?.data?.choices?.[0]?.text) {
-            response.openai = response.openai.data.choices[0].text
-            let index = 0
-            for (let c of response['openai']) {
-                if (index <= 1) {
-                    if (c == '\n') {
-                        response.openai = response.openai.slice(1, response.openai.length)
-                    }
-                } else {
-                    break;
-                }
-                index++
-            }
+        if (completion?.choices?.[0]?.message?.content) {
+            response.openai = completion.choices[0].message.content.trim()
             response.db = await chat.updateChat(chatId, prompt, response, userId)
         }
     } catch (err) {
+        console.error('OpenAI API Error:', err)
         res.status(500).json({
             status: 500,
-            message: err
+            message: err?.message || 'OpenAI API Error'
         })
     } finally {
         if (response?.db && response?.openai) {

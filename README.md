@@ -1,143 +1,240 @@
-# ChatGPT
-This clone is made with MERN and uses OpenAI API.
+# ChatGPT Clone
 
-This project is clone of chatGPT , chatGPT is an AI . It's allows you to have human-like conversations.
+A full-stack ChatGPT clone built with the MERN stack (MongoDB, Express.js, React, Node.js) using OpenAI's GPT-3.5 Turbo API.
 
 ## Features
 
-- PWA
-- Offline
-- Password login
-- Forgot password
-- Google login & signup
-- Chat 
-- Auto chat save
-- History Save
-- Account delete option
-- Light & Dark mode
-- Responsive Design
+- 🔐 **Authentication**: Email/password login with email verification
+- 🔑 **Google OAuth**: Sign in with Google
+- 💬 **Real-time Chat**: AI-powered conversations using GPT-3.5 Turbo
+- 💾 **Auto-save**: Chats automatically saved to MongoDB
+- 📜 **Chat History**: Access your previous conversations
+- 🌙 **Dark/Light Mode**: Theme toggle with persistence
+- 📱 **Responsive Design**: Works on desktop and mobile
+- 🔌 **PWA Support**: Install as a progressive web app
+- 🔒 **Forgot Password**: Email-based password reset
+
+## Tech Stack
+
+**Frontend:**
+- React 18 + Vite
+- Redux Toolkit
+- React Router v6
+- SCSS
+- Google OAuth
+
+**Backend:**
+- Node.js + Express
+- MongoDB
+- JWT Authentication
+- OpenAI API (GPT-3.5 Turbo)
+- Nodemailer
 
 ## Prerequisites
 
-- get your api key from https://openai.com/api/
+Before you begin, ensure you have:
 
-Make sure you have installed all of the following prerequisites on your development machine:
-
-- Node Js & Npm [Download and Install](https://nodejs.org/en)
-- MongoDB [Download and Install](https://www.mongodb.com/docs/manual/installation/)
-- Git [Download and Install](https://git-scm.com/downloads)
-
-## Technology Used
-
-#vite #reactjs #scss #redux-toolkit
-
-#nodejs #expressjs #mongodb #jsonwebtoken authentication 
-
-#javascript
-
-#openai #chatgpt
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [MongoDB](https://www.mongodb.com/) (local or Atlas)
+- [OpenAI API Key](https://platform.openai.com/api-keys)
+- [Google OAuth Client ID](https://console.cloud.google.com/apis/credentials)
+- Gmail account for SMTP (or other email provider)
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file in server directory
+### Server (`server/.env`)
 
-`PORT` = `5000`
-
-`MONGO_URL`
-
-`SITE_URL`
-
-`JWT_PRIVATE_KEY`
-
-`OPENAI_API_KEY`
-
-`OPENAI_ORGANIZATION`
-
-`MAIL_EMAIL`
-
-`MAIL_SECRET`
-
-To run this project, you will need to add the following environment variables to your .env.local file in client directory
-
-`VITE_CLIENT_ID` #Google login api client id
-
-## Run Locally
-
-Clone the project
-
-```bash
-  git clone https://github.com/ansonbenny/ChatGPT.git
+```env
+PORT=5000
+NODE_ENV=development
+MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/chatGPT
+SITE_URL=http://localhost:5173
+JWT_PRIVATE_KEY=your-super-secret-jwt-key
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxx
+OPENAI_ORGANIZATION=org-xxxxxxxxxxxxx
+MAIL_EMAIL=your-email@gmail.com
+MAIL_SECRET=your-app-password
 ```
 
-##To Start BackEnd
+### Client (`client/.env.local`)
 
-Go to the server directory
-
-```bash
-  cd ChatGPT/server
+```env
+VITE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 ```
 
-Install dependencies
+## Local Development
+
+### 1. Clone the repository
 
 ```bash
-  npm install
+git clone https://github.com/ansonbenny/ChatGPT.git
+cd ChatGPT
 ```
 
-Start
+### 2. Setup the Server
 
 ```bash
-  npm start
+cd server
+npm install
+# Create .env file with your variables
+npm run dev
 ```
 
-##To Start FrontEnd
-
-Go to the client directory
+### 3. Setup the Client
 
 ```bash
-  cd ChatGPT/client
+cd client
+npm install
+# Create .env.local file with your Google Client ID
+npm run dev
 ```
 
-Install dependencies
+The app will be available at `http://localhost:5173`
 
-```bash
-  npm install
-```
+---
 
-Start
+## 🚀 Deploy to Render.com
 
-```bash
-  npm run dev
-```
+### Option 1: One-Click Deploy (Recommended)
 
+1. Fork this repository to your GitHub account
 
-## Demo
+2. Go to [Render Dashboard](https://dashboard.render.com)
 
-[Live](https://chatgpt-8z57.onrender.com)
+3. Click **New → Web Service**
 
-https://user-images.githubusercontent.com/94070164/236692494-a50edafc-7864-439a-9cb3-fa112abc00a6.mp4
+4. Connect your GitHub repository
 
-![Screenshot_2023-04-28_12-45-28](https://user-images.githubusercontent.com/94070164/236693044-a4884b84-a058-46ba-ae50-0f9b50f92f02.png)
+5. Configure the service:
+   - **Name**: `chatgpt-clone` (or your preferred name)
+   - **Region**: Choose closest to your users
+   - **Root Directory**: Leave empty
+   - **Build Command**: 
+     ```
+     cd client && npm install && npm run build && mkdir -p ../server/dist && cp -r dist/* ../server/dist/ && cd ../server && npm install
+     ```
+   - **Start Command**: `cd server && npm start`
 
-![Screenshot_2023-04-28_12-45-42](https://user-images.githubusercontent.com/94070164/236693067-fdf687ce-fafc-495b-9b1e-ad19ae18a339.png)
+6. Add Environment Variables:
+   | Key | Value |
+   |-----|-------|
+   | `NODE_ENV` | `production` |
+   | `PORT` | `5000` |
+   | `MONGO_URL` | Your MongoDB connection string |
+   | `SITE_URL` | `https://your-app-name.onrender.com` |
+   | `JWT_PRIVATE_KEY` | Generate a secure random string |
+   | `OPENAI_API_KEY` | Your OpenAI API key |
+   | `OPENAI_ORGANIZATION` | Your OpenAI organization ID |
+   | `MAIL_EMAIL` | Your Gmail address |
+   | `MAIL_SECRET` | Your Gmail app password |
+   | `VITE_CLIENT_ID` | Your Google OAuth Client ID |
 
-![Screenshot_2023-04-28_12-45-55](https://user-images.githubusercontent.com/94070164/236693075-429a387d-91d8-495a-afe4-84201ad43ef2.png)
+7. Click **Create Web Service**
 
-![auth](https://user-images.githubusercontent.com/94070164/236693311-13089e93-3b50-4187-8203-b122a7016b71.png)
+### Option 2: Using render.yaml
 
-![login](https://user-images.githubusercontent.com/94070164/236693346-08e08ae2-c265-4743-b9f6-e4899c4168bb.png)
+The repository includes a `render.yaml` file for Infrastructure as Code deployment:
 
-![login2](https://user-images.githubusercontent.com/94070164/236693355-f976a480-8a98-4b2b-92d0-542bdd03957c.png)
+1. Fork this repository
+2. Go to Render Dashboard → **New → Blueprint**
+3. Connect your repository
+4. Render will automatically detect `render.yaml`
+5. Fill in the environment variables when prompted
+6. Deploy!
 
-![forgot](https://user-images.githubusercontent.com/94070164/236693362-ceff0f29-d7bd-4787-9445-df65b00650ff.png)
+### Post-Deployment Configuration
 
-![reg](https://user-images.githubusercontent.com/94070164/236693371-97fe8ed6-f33b-4f4e-a195-8ef4d0f8b78f.png)
+#### Google OAuth Setup
 
-![reg2](https://user-images.githubusercontent.com/94070164/236693378-dba41424-ca47-4b57-861f-508d8c3b8f5b.png)
+1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Select your OAuth 2.0 Client ID
+3. Add your Render URL to **Authorized JavaScript origins**:
+   - `https://your-app-name.onrender.com`
+4. Add to **Authorized redirect URIs**:
+   - `https://your-app-name.onrender.com`
+   - `https://your-app-name.onrender.com/login/auth`
 
-![offline](https://user-images.githubusercontent.com/94070164/236693384-d3c86f92-b773-46e4-823c-79c26004737d.png)
+#### Gmail App Password
 
-![Screenshot_2023-04-28_19-28-07](https://user-images.githubusercontent.com/94070164/236693084-8e6df9e7-9e12-427d-a63f-1123145e50f8.png)
+1. Enable 2-Step Verification on your Google Account
+2. Go to [App Passwords](https://myaccount.google.com/apppasswords)
+3. Generate a new app password for "Mail"
+4. Use this password as `MAIL_SECRET`
 
-![app](https://user-images.githubusercontent.com/94070164/236693396-32687dc4-cf32-45a8-8e93-5a1e9fefa1c1.png)
+---
 
+## API Endpoints
 
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/user/checkLogged` | Check login status |
+| POST | `/api/user/signup` | Register new user |
+| GET | `/api/user/login` | Login user |
+| GET | `/api/user/logout` | Logout user |
+| POST | `/api/user/forgot-request` | Request password reset |
+| PUT | `/api/user/forgot-finish` | Complete password reset |
+| DELETE | `/api/user/account` | Delete account |
+
+### Chat
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/chat/` | Create new chat |
+| PUT | `/api/chat/` | Continue existing chat |
+| GET | `/api/chat/saved` | Get chat by ID |
+| GET | `/api/chat/history` | Get chat history |
+| DELETE | `/api/chat/all` | Delete all chats |
+
+---
+
+## Screenshots
+
+![Chat Interface](https://user-images.githubusercontent.com/94070164/236693044-a4884b84-a058-46ba-ae50-0f9b50f92f02.png)
+
+![Login Page](https://user-images.githubusercontent.com/94070164/236693346-08e08ae2-c265-4743-b9f6-e4899c4168bb.png)
+
+![Dark Mode](https://user-images.githubusercontent.com/94070164/236693084-8e6df9e7-9e12-427d-a63f-1123145e50f8.png)
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**1. "OpenAI API Error"**
+- Verify your `OPENAI_API_KEY` is valid
+- Check if you have API credits remaining
+- Ensure `OPENAI_ORGANIZATION` is correct
+
+**2. "CORS Error"**
+- Make sure `SITE_URL` exactly matches your frontend URL
+- Include the protocol (`https://`)
+
+**3. "Google Login Not Working"**
+- Verify `VITE_CLIENT_ID` is set correctly
+- Check authorized origins in Google Console
+- Ensure the app is using HTTPS in production
+
+**4. "Emails Not Sending"**
+- Use a Gmail App Password, not your regular password
+- Enable 2FA on your Google account first
+
+---
+
+## License
+
+ISC License
+
+## Author
+
+**Anson Benny**
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
